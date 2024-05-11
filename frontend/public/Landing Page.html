@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Plan a Trip</title>
+    <!--<link rel="stylesheet" href="styles.css">-->
+    <script defer src = script.js></script>
+    <style>
+            :root {
+        --primary-color: #007bff;
+        --hover-color: #0056b3;
+        --background-light: #f2f2f2;
+        --border-color-light: #ccc;
+        --text-color: #333;
+        --error-color: #ff0000; /* For error messages */
+        }
+
+        body, input, button {
+        font-family: 'Arial', sans-serif;
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        }
+
+        .navbar {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 10px;
+        background-color: var(--background-light);
+        border-bottom: 1px solid var(--border-color-light);
+        }
+
+        input[type="text"], input[type="date"], button, select, textarea {
+        width: 100%;
+        padding: 10px;
+        margin: 10px 0;
+        border: 1px solid var(--border-color-light);
+        border-radius: 4px;
+        background-color: white;
+        color: var(--text-color);
+        }
+
+        button {
+        background-color: var(--primary-color);
+        color: white;
+        cursor: pointer;
+        }
+
+        button:hover, button:focus {
+        background-color: var(--hover-color);
+        outline: none; /* remove default focus outline */
+        }
+
+        :focus {
+        outline: 3px dashed var(--hover-color);
+        outline-offset: 4px;
+        }
+
+        @media screen and (min-width: 768px) {
+        html {
+            font-size: 18px;
+        }
+        }
+
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <a href="#" id="home">Home</a> <!-- Use anchor tags for navigation -->
+        <a href="#" id="guides">Guides</a>
+        <input type="text" placeholder="Enter a destination" aria-label="Search for a destination">
+        <button id="login">Log in</button>
+        <button id="signup">Sign Up</button>
+    </nav>
+
+    <main class="main-container" role="main">
+        <h1>Plan a Trip!</h1>
+        <form>
+            <label for="destination">Enter destination</label>
+            <input type="text" id="destination" name="destination" placeholder="Enter destination" required>
+
+            <label for="budget" id="budget-label">Enter Budget</label>
+            <input type="range" id="budget" name="budget" aria-labelledby="budget-label" min="0" max="5000" step="10">
+            
+            <fieldset>
+                <legend>Pick the date</legend>
+                <input type="date" id="trip-date" name="trip-date" required>
+            </fieldset>
+
+            <button type="button" id="invite-friends">Invite Friends</button>
+
+    <div id="privacy-settings" class="privacy-settings" style="display: none;">
+        <fieldset>
+            <legend>Privacy Settings</legend>
+            <label><input type="checkbox" name="privacy" value="friends"> Friends</label>
+            <label><input type="checkbox" name="privacy" value="private"> Private</label>
+            <label><input type="checkbox" name="privacy" value="public"> Public</label>
+            <label><input type="checkbox" name="privacy" value="unlisted"> Unlisted</label>
+        </fieldset>
+    </div>
+
+            <button type="submit" id="start-planning">Start Planning</button>
+        </form>
+    </main>
+
+</body>
+</html>

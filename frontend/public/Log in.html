@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Sign In</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="../css/signin.css">
+  <script src="script.js"></script>
+</head>
+
+<body>
+
+  <script>
+    $(document).ready(function () {
+      $("#Login").click(function () {
+        var email = $("#email").val();
+        var password = $("#pwd").val();
+        var data = `{"email":"${email}","password":"${password}"}`;
+
+        $.ajax({
+          url: 'http://localhost:8080/user/login',
+          type: 'POST',
+          data: data,
+          contentType: "application/json",
+          dataType: "json",
+          success: function (data, textStatus, xhr) {
+            var token = data.token;
+            var userData = data.UserData;
+            localStorage.setItem("token", token);
+            localStorage.setItem("userInfo", userData);
+            window.location.assign("http://localhost:3000/Landing Page.html");
+          },
+          error: function (xhr, textStatus, err) {
+            window.alert('The email or password entered is incorrect');
+          }
+
+        });
+        return false;
+      });
+    })
+  </script>
+
+  <form action="#/">
+    <div class="container">
+      <h1>Log In</h1>
+      <hr>
+
+      <label for="email"><b>Email</b></label>
+      <input type="text" placeholder="Enter Email" name="email" id="email" required>
+
+      <label for="psw"><b>Password</b></label>
+      <input type="password" placeholder="Enter Password" name="psw" id="pwd" required>
+
+      <hr>
+
+      <button type="submit" class="registerbtn" id="Login"></a>Login</button>
+    </div>
+
+    <div class="signin">
+      <p>Dont have an account? <a href="./signup.html">Sign up</a>.</p>
+    </div>
+  </form>
+</body>
+
+</html>

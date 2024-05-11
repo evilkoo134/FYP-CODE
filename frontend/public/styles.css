@@ -1,0 +1,175 @@
+:root {
+  --primary-color: #007bff;
+  --hover-color: #0056b3;
+  --background-light: #f2f2f2;
+  --border-color-light: #ccc;
+  --text-color: #333;
+  --error-color: #ff0000; /* For error messages */
+}
+
+html {
+  margin: 0px;
+  height: 100%;
+  width: 100%;
+}
+
+body {
+  margin: 0px;
+  min-height: 100%;
+  width: 100%;
+}
+
+body, input, button {
+  font-family: 'Arial', sans-serif;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  margin:0;
+  height: 100%;
+}
+
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px;
+  background-color: var(--background-light);
+  border-bottom: 1px solid var(--border-color-light);
+}
+
+input[type="text"], input[type="date"], button, select, textarea {
+  width: 100%;
+  padding: 10px;
+  margin: 10px 0;
+  border: 1px solid var(--border-color-light);
+  border-radius: 4px;
+  background-color: white;
+  color: var(--text-color);
+}
+
+button {
+  background-color: var(--primary-color);
+  color: white;
+  cursor: pointer;
+}
+
+button:hover, button:focus {
+  background-color: var(--hover-color);
+  outline: none; /* remove default focus outline */
+}
+
+:focus {
+  outline: 3px dashed var(--hover-color);
+  outline-offset: 4px;
+}
+
+@media screen and (min-width: 768px) {
+  html {
+    font-size: 18px;
+  }
+}
+
+/* 
+/* MAIN PAGE CSS */
+/* General styles, similar to what was provided earlier */
+body, input, button {
+  font-family: Arial, sans-serif;
+  box-sizing: border-box;
+}
+
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #f2f2f2;
+  padding: 10px;
+  border-bottom: 1px solid #ccc;
+}
+
+.main-container {
+  display: flex;
+  justify-content: space-between;
+  margin: 20px;
+}
+
+.sidebar, .content, .map-section {
+  padding: 10px;
+}
+
+.sidebar {
+  width: 20%;
+  border-right: 1px solid #ccc;
+}
+
+.content {
+  width: 50%;
+}
+
+.map-section {
+  width: 50%;
+  height: 450px;
+}
+
+.itinerary-detail {
+  display: flex;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.itinerary-detail img {
+  width: 100px;
+  height: 100px;
+  margin-right: 10px;
+  border-radius: 4px;
+}
+
+/* sidebar */
+html {
+  scroll-behavior: smooth; /* Enables smooth scrolling */
+}
+
+.navbar, .sidebar, .content, .map-section {
+  padding: 10px;
+}
+
+.sidebar a {
+  display: block;
+  margin-bottom: 20px;
+  color: #007bff; /* Blue link color */
+  text-decoration: none;
+}
+
+.sidebar a:hover {
+  text-decoration: underline;
+}
+
+.itinerary-detail {
+  border: 1px solid #ccc;
+  margin-bottom: 10
+}
+
+/* Main Content Section Styling */
+.content {
+  width: 50%; /* or your specified width */
+  padding: 10px;
+  height: 1200px; /* Example fixed height */
+  overflow-y: auto; /* Enables vertical scrolling */
+  border-right: 1px solid #ccc; /* Visual consistency */
+}
+
+/* Scrollbar Styling for Webkit Browsers */
+.content::-webkit-scrollbar {
+  width: 8px; /* Scrollbar width */
+}
+
+.content::-webkit-scrollbar-track {
+  background: #f1f1f1; /* Track color */
+}
+
+.content::-webkit-scrollbar-thumb {
+  background: #888; /* Thumb color */
+}
+
+.content::-webkit-scrollbar-thumb:hover {
+  background: #555; /* Thumb hover color */
+}

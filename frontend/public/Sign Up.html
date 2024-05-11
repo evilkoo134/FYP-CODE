@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Sign Up</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="../css/signup.css">
+  <script src="script.js"></script>
+</head>
+
+<body>
+
+  <form action="#/" id="form">
+    <div class="container">
+      <h1>Sign Up</h1>
+      <hr>
+
+      <label for="email"><b>Email</b></label>
+      <input type="text" placeholder="Enter Email" name="email" id="email" required>
+      <p id="output" style="color: red;"></p>
+
+      <label for="psw"><b>Password</b></label>
+      <input type="password" placeholder="Enter Password" name="pwd" id="pwd" required>
+      <p id="pwd_output" style="color: red;"></p>
+      <!-- <label for="psw"><b>Repeat Password</b></label>
+      <input type="password" placeholder="Repeat Password" name="psw1" id="psw1" required> -->
+
+      <hr>
+
+      <button type="submit" class="registerbtn" id="Register">Register</button>
+    </div>
+
+    <div class="signin">
+      <p>Already have an account? <a href="./signin.html">Sign in</a>.</p>
+    </div>
+  </form>
+
+  <script>
+    $(document).ready(function () {
+      $("#Register").click(function () {
+        var email = $("#email").val();
+        var password = $("#pwd").val();
+        var data = `{"email":"${email}","password":"${password}"}`;
+
+        $.ajax({
+          url: 'http://localhost:8081/email',
+          type: 'POST',
+          data: data,
+          contentType: "application/json",
+          dataType: "json",
+          success: function (data, textStatus, xhr) {
+            if (data != null) {
+              var emailArr = data.emailData.length;
+              if (emailArr == 0) {
+                const output = document.querySelector("#output");
+                const pwdOutput = document.querySelector("#pwd_output");
+                const re_email = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/;
+                const re_pwd = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+                const ok_email = re_email.exec(email);
+                const ok_pwd = re_pwd.exec(password);
+
+                if (ok_email && ok_pwd) {
+                  var data2 = `{"email":"${email}","password":"${password}"}`;
+                  $.ajax({
+                    url: 'http://localhost:8081/user',
+                    type: 'POST',
+                    data: data2,
+                    contentType: "application/json",
+                    dataType: "json",
+                    success: function (data, textStatus, xhr) {
+                      var userID = data.UserID;
+                      localStorage.setItem("userID", userID);
+                      window.location.assign("http://localhost:3001/verify.html");
+                    },
+                    error: function (xhr, textStatus, err) {
+                      console.log(err);
+                      window.alert(err);
+                    }
+                  });
+                } else if (!ok_email && !ok_pwd) {
+                  output.textContent = `${email} is not a valid email!`;
+                  pwdOutput.textContent = `Password Requirement : At least one uppercase letter, one lowercase, one number and one special character`;
+                } else if (ok_email && !ok_pwd) {
+                  output.textContent = ``;
+                  pwdOutput.textContent = `Password Requirement : At least one uppercase letter, one lowercase, one number and one special character`;
+                } else {
+                  output.textContent = `${email} is not a valid email!`;
+                  pwdOutput.textContent = ``;
+                }
+              } else {
+                console.log(data.emailData);
+                window.alert('This email is already taken. Please choose another one.');
+              }
+            } else {
+              console.log("Error");
+              window.alert("Login Failed!");
+            }
+          },
+          error: function (xhr, textStatus, err) {
+            console.log(err);
+            window.alert(err);
+          }
+        });
+        return false;
+      });
+    })
+
+  </script>
+
+</body>
+
+</html>
