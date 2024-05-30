@@ -3,180 +3,305 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Travel Itinerary</title>
-    <!--<link rel="stylesheet" href="style.css">-->
-<style>
-/* MAIN PAGE CSS */
-/* General styles, similar to what was provided earlier */
-:root {
-  --primary-color: #007bff;
-  --hover-color: #0056b3;
-  --background-light: #f2f2f2;
-  --border-color-light: #ccc;
-  --text-color: #333;
-  --error-color: #ff0000; /* For error messages */
-}
+    <title>Guides Section</title>
+    <style>
+         :root {
+            --primary-color: #007bff;
+            --hover-color: #0056b3;
+            --background-light: #f2f2f2;
+            --border-color-light: #ccc;
+            --text-color: #333;
+            --error-color: #ff0000;
+            --border-color-light: #ccc;
+        }
 
-body, input, button {
-  font-family: Arial, sans-serif;
-  box-sizing: border-box;
-}
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
 
-.navbar {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  background-color: #f2f2f2;
-  padding: 10px;
-  border-bottom: 1px solid #ccc;
-}
+        body, input, select, textarea {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
-.main-container {
-  display: flex;
-  justify-content: space-between;
-  margin: 20px;
-}
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px;
+            background-color: var(--background-light);
+            border-bottom: 1px solid var(--border-color-light);
+        }
 
-.sidebar, .content, .map-section {
-  padding: 10px;
-}
+        .navbar a, .navbar input, .navbar button {
+            margin: 0 5px;
+        }
 
-.sidebar {
-  width: 20%;
-  border-right: 1px solid #ccc;
-}
+        .navbar a, .navbar button {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 10px;
+            border: none;
+            border-radius: 4px;
+            text-decoration: none;
+            text-align: center;
+        }
 
-.content {
-  width: 50%;
-}
+        .navbar a:hover, .navbar button:hover, .navbar a:focus, .navbar button:focus {
+            background-color: var(--hover-color);
+            outline: none;
+        }
 
-.map-section {
-  width: 50%;
-  height: 450px;
-}
+        input[type="text"], input[type="date"], button, select, textarea {
+        width: 100%;
+        padding: 10px;
+        margin: 10px 0;
+        border: 1px solid var(--border-color-light);
+        border-radius: 4px;
+        background-color: white;
+        color: var(--text-color);
+        }
+        
+        .main-container button{
+        width: 30%;
+        border: 1px solid var(--border-color-light);
+        border-radius: 4px;
+        }
 
-.itinerary-detail {
-  display: flex;
-  align-items: center;
-  margin-bottom: 20px;
-}
+        header {
+            background-color: #333;
+            color: white;
+            padding: 1rem;
+        }
 
-.itinerary-detail img {
-  width: 100px;
-  height: 100px;
-  margin-right: 10px;
-  border-radius: 4px;
-}
+        main {
+            width: 80%;
+            margin: 20px auto;
+            padding: 20px;
+            box-shadow: 0 0 10px #ccc;
+        }
+        .guide {
+            border: 1px solid #ddd;
+            padding: 1rem;
+            margin-bottom: 1rem;
+        }
+        .guide img {
+            max-width: 100%;
+        }
 
-/* sidebar */
-html {
-  scroll-behavior: smooth; /* Enables smooth scrolling */
-}
+        @media screen and (min-width: 768px) {
+            .navbar input {
+                flex: 1;
+            }
 
-.navbar, .sidebar, .content, .map-section {
-  padding: 10px;
-}
+            .navbar a, .navbar button {
+                flex: 0 0 auto;
+            }
+        }
 
-.sidebar a {
-  display: block;
-  margin-bottom: 20px;
-  color: #007bff; /* Blue link color */
-  text-decoration: none;
-}
+        nav {
+            background-color: var(--primary-color);
+            padding: 10px;
+            text-align: center;
+        }
 
-.sidebar a:hover {
-  text-decoration: underline;
-}
+        nav a {
+            color: #fff;
+            text-decoration: none;
+            margin: 0 10px;
+        }
 
-.itinerary-detail {
-  border: 1px solid #ccc;
-  margin-bottom: 10
-}
+        .search-bar button:hover, .search-bar button:focus {
+            background-color: var(--hover-color);
+            outline: none;
+        }
 
-/* Main Content Section Styling */
-.content {
-  width: 50%; /* or your specified width */
-  padding: 10px;
-  height: 1200px; /* Example fixed height */
-  overflow-y: auto; /* Enables vertical scrolling */
-  border-right: 1px solid #ccc; /* Visual consistency */
-}
+        button {
+            padding: 10px;
+            margin: 10px 5px;
+            border: none;
+            border-radius: 4px;
+            background-color: var(--primary-color);
+            color: white;
+            cursor: pointer;
+        }
 
-/* Scrollbar Styling for Webkit Browsers */
-.content::-webkit-scrollbar {
-  width: 8px; /* Scrollbar width */
-}
+        button:hover, button:focus {
+            background-color: var(--hover-color);
+            outline: none;
+        }
 
-.content::-webkit-scrollbar-track {
-  background: #f1f1f1; /* Track color */
-}
+        .search-bar {
+            display: flex;
+            margin-bottom: 20px;
+        }
 
-.content::-webkit-scrollbar-thumb {
-  background: #888; /* Thumb color */
-}
+        .search-bar button {
+            padding: 10px;
+            border: 1px solid var(--border-color-light);
+            border-left: none;
+            border-radius: 0 4px 4px 0;
+            background-color: var(--primary-color);
+            color: white;
+        }
 
-.content::-webkit-scrollbar-thumb:hover {
-  background: #555; /* Thumb hover color */
-}
-</style>
+        .main-container{
+            background-color: #f4f6ef;
+        }
+
+    </style>
 </head>
 <body>
-    <header class="navbar">
-        <div class="logo">[Logo Here]</div>
-        <nav>
-            <a href="#" class="nav-link active">Home</a>
-            <a href="#" class="nav-link">Guides</a>
-            <input type="text" placeholder="Enter a Place" aria-label="Search">
-            <button class="login-button">Log in</button>
-            <button class="signup-button">Sign Up</button>
-        </nav>
-    </header>
-    
-    <div class="container">
-        <aside class="sidebar">
-            <ul class="menu">
-                <li class="menu-item">Itinerary</li>
-                <li class="menu-item">Budget</li>
-                <!-- More menu items -->
-            </ul>
-        </aside>
+    <nav class="navbar">
+        <a href="Landing Page.html" id="home">Home</a>
+        <a href="Guides.html" id="Guides">Guides</a>
+        <a href="StudentDiscounts.html">Discover Discounts</a>
+        <input type="text" placeholder="Search for a destination" aria-label="Search for a destination">
+        <a href="Log in.html" id="login">Log in</a>
+        <a href="Sign Up.html" id="signup">Sign Up</a>
+    </nav>
+    <main class="main-container">
+        <h1>Guides</h1>
+        <div class="search-bar">
+            <input type="text" id="searchDestination" placeholder="Enter a Destination" aria-label="Search for guides by destination">
+            <button type="button" id="searchButton">Search</button>
+        </div>
+        <div id="guidesList">
+            <!-- Guides will be dynamically populated here -->
+        </div>
+        <button type="button" id="loadMoreButton">More</button>
+        <button type="button" id="addGuideButton">Add Guide</button>
         
-        <main class="content">
-            <section class="itinerary-section">
-                <h1>Itinerary to London</h1>
-                <!-- Itinerary details go here -->
-            </section>
-            <section class="budget-section">
-                <h2>Budgeting</h2>
-                <!-- Budget details go here -->
-            </section>
-            <section class="places-to-visit-section">
-                <h2>Places to Visit</h2>
-                <!-- Places to visit details go here -->
-            </section>
-        </main>
+        <!-- Add Guide Form -->
+        <div id="addGuideForm" style="display: none;">
+            <h2>Add New Guide</h2>
+            <form id="newGuideForm">
+                <label for="guideTitle">Title</label>
+                <input type="text" id="guideTitle" name="title" required>
+                <label for="guideDescription">Description</label>
+                <textarea id="guideDescription" name="description" required></textarea>
+                <label for="guideImage">Image URL</label>
+                <input type="text" id="guideImage" name="image" required>
+                <button type="submit">Submit</button>
+            </form>
+        </div>
+    </main>
+    <script>
+        // Change log in and sign up buttons to user email and add dropdown functionality
+        document.addEventListener("DOMContentLoaded", function () {
+            const userEmail = localStorage.getItem('userEmail');
+            if (userEmail) {
+                const loginElement = document.getElementById('login');
+                loginElement.innerText = userEmail;
+                loginElement.href = "#";
+                loginElement.classList.add('dropdown');
+                const dropdownContent = document.createElement('div');
+                dropdownContent.classList.add('dropdown-content');
+                const logoutLink = document.createElement('a');
+                logoutLink.innerText = 'Log Out';
+                logoutLink.href = "#";
+                logoutLink.onclick = function () {
+                    localStorage.removeItem('userEmail');
+                    window.location.assign("Log in.html");
+                };
+                const landingPageLink = document.createElement('a');
+                landingPageLink.innerText = 'Landing Page';
+                landingPageLink.href = "Landing Page.html";
+                dropdownContent.appendChild(landingPageLink);
+                dropdownContent.appendChild(logoutLink);
+                loginElement.appendChild(dropdownContent);
+                document.getElementById('signup').style.display = 'none';
+            }
 
-        <aside class="map-section">
-            <div class="map-container">
-                <!-- Replace the src with the link you copied from Google Maps -->
-                <iframe
-                    src="https://maps.app.goo.gl/EAEYaiud9ggZjQow6"
-                    width="600"
-                    height="450"
-                    style="border:0;"
-                    allowfullscreen=""
-                    loading="lazy">
-                </iframe>
-            </div>
-            <button aria-label="Zoom in">+</button>
-            <button aria-label="Zoom out">-</button>
-        </aside>
-    </div>
+            // Load guides
+            function loadGuides() {
+                fetch('http://localhost:8080/content/all')
+                    .then(response => response.json())
+                    .then(data => {
+                        const guidesList = document.getElementById('guidesList');
+                        guidesList.innerHTML = '';
+                        data.forEach(guide => {
+                            const guideDiv = document.createElement('div');
+                            guideDiv.className = 'guide';
+                            guideDiv.innerHTML = `
+                                <img src="${guide.pic}" alt="Guide Image">
+                                <div>
+                                    <h3>${guide.title}</h3>
+                                    <p>${guide.description}</p>
+                                    <p>By: ${guide.user_id}</p>
+                                </div>
+                            `;
+                            guidesList.appendChild(guideDiv);
+                        });
+                    })
+                    .catch(err => console.error(err));
+            }
 
-    <footer class="footer">
-        <!-- Footer content -->
-    </footer>
-    
-    <script src="scripts.js"></script>
+            loadGuides();
+
+            // Add guide form handling
+            document.getElementById('addGuideButton').addEventListener('click', function () {
+                document.getElementById('addGuideForm').style.display = 'block';
+            });
+
+            document.getElementById('newGuideForm').addEventListener('submit', function (event) {
+                event.preventDefault();
+                const title = document.getElementById('guideTitle').value;
+                const description = document.getElementById('guideDescription').value;
+                const image = document.getElementById('guideImage').value;
+                const user_id = localStorage.getItem('userEmail'); // Assuming userEmail is the user ID
+
+                fetch('http://localhost:8080/content', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ title, description, pic: image, user_id })
+                })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.success) {
+                            loadGuides();
+                            document.getElementById('addGuideForm').style.display = 'none';
+                            document.getElementById('newGuideForm').reset();
+                        } else {
+                            alert('Failed to add guide');
+                        }
+                    })
+                    .catch(err => console.error(err));
+            });
+
+            // Search guides
+            document.getElementById('searchButton').addEventListener('click', function () {
+                const searchDestination = document.getElementById('searchDestination').value;
+                fetch(`http://localhost:8080/content/search?title=${encodeURIComponent(searchDestination)}`)
+                    .then(response => response.json())
+                    .then(data => {
+                        const guidesList = document.getElementById('guidesList');
+                        guidesList.innerHTML = '';
+                        data.forEach(guide => {
+                            const guideDiv = document.createElement('div');
+                            guideDiv.className = 'guide';
+                            guideDiv.innerHTML = `
+                                <img src="${guide.pic}" alt="Guide Image">
+                                <div>
+                                    <h3>${guide.title}</h3>
+                                    <p>${guide.description}</p>
+                                    <p>By: ${guide.user_id}</p>
+                                </div>
+                            `;
+                            guidesList.appendChild(guideDiv);
+                        });
+                    })
+                    .catch(err => console.error(err));
+            });
+
+        });
+    </script>
 </body>
+
 </html>

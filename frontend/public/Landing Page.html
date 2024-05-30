@@ -2,108 +2,397 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Plan a Trip</title>
-    <!--<link rel="stylesheet" href="styles.css">-->
-    <script defer src = script.js></script>
+    <title>Landing Page</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <style>
-            :root {
-        --primary-color: #007bff;
-        --hover-color: #0056b3;
-        --background-light: #f2f2f2;
-        --border-color-light: #ccc;
-        --text-color: #333;
-        --error-color: #ff0000; /* For error messages */
+        /* Enhancement: Defined CSS variables for consistency */
+        :root {
+            --primary-color: #007bff;
+            --hover-color: #0056b3;
+            --background-light: #f2f2f2;
+            --border-color-light: #ccc;
+            --text-color: #333;
+            --error-color: #ff0000;
+            --focus-color: #ffbf47;
+            --animation-duration: 0.3s;
         }
 
-        body, input, button {
-        font-family: 'Arial', sans-serif;
-        margin: 0;
-        padding: 0;
-        box-sizing: border-box;
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            color: var(--text-color);
+            background-color: var(--background-light);
+        }
+
+        body, input, button, select, textarea {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
         }
 
         .navbar {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        padding: 10px;
-        background-color: var(--background-light);
-        border-bottom: 1px solid var(--border-color-light);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px;
+            background-color: var(--background-light);
+            border-bottom: 1px solid var(--border-color-light);
+        }
+
+        .navbar a, .navbar input, .navbar button {
+            margin: 0 5px;
+        }
+
+        .navbar a, .navbar button {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 10px;
+            border: none;
+            border-radius: 4px;
+            text-decoration: none;
+            text-align: center;
+            transition: background-color var(--animation-duration);
+        }
+
+        .navbar a:hover, .navbar button:hover, .navbar a:focus, .navbar button:focus {
+            background-color: var(--hover-color);
+            outline: none;
         }
 
         input[type="text"], input[type="date"], button, select, textarea {
-        width: 100%;
-        padding: 10px;
-        margin: 10px 0;
-        border: 1px solid var(--border-color-light);
-        border-radius: 4px;
-        background-color: white;
-        color: var(--text-color);
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid var(--border-color-light);
+            border-radius: 4px;
+            background-color: white;
+            color: var(--text-color);
+            transition: border-color var(--animation-duration);
+        }
+
+        input[type="text"]:focus,
+        input[type="date"]:focus,
+        button:focus,
+        select:focus,
+        textarea:focus {
+            border-color: var(--focus-color);
+            outline: none;
         }
 
         button {
-        background-color: var(--primary-color);
-        color: white;
-        cursor: pointer;
+            background-color: var(--primary-color);
+            color: white;
+            cursor: pointer;
+            border: none;
+            border-radius: 4px;
+            transition: background-color var(--animation-duration);
         }
 
         button:hover, button:focus {
-        background-color: var(--hover-color);
-        outline: none; /* remove default focus outline */
+            background-color: var(--hover-color);
+            outline: none;
         }
 
         :focus {
-        outline: 3px dashed var(--hover-color);
-        outline-offset: 4px;
+            outline: 3px dashed var(--hover-color);
+            outline-offset: 4px;
         }
 
-        @media screen and (min-width: 768px) {
-        html {
-            font-size: 18px;
-        }
+        .main-container {
+            padding: 20px;
         }
 
+        form {
+            max-width: 600px;
+            margin: auto;
+            background-color: var(--background-light);
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            transition: box-shadow var(--animation-duration);
+        }
+
+        form:hover {
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+        }
+
+        fieldset {
+            border: none;
+            padding: 0;
+        }
+
+        legend {
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .feedback {
+            color: var(--error-color);
+            font-size: 0.9em;
+        }
+
+        .privacy-settings {
+            margin-top: 10px;
+        }
+
+        @media screen and (max-width: 767px) {
+            .navbar input {
+                flex: 1;
+            }
+
+            .navbar a, .navbar button {
+                flex: 0 0 auto;
+            }
+        }
+
+        .view-itinerary-button {
+            width: 100%;
+        }
+
+        nav {
+            background-color: var(--primary-color);
+            padding: 10px;
+            text-align: center;
+        }
+
+        nav a {
+            color: white;
+            text-decoration: none;
+            margin: 0 30px;
+        }
+
+        h1 {
+            text-align: center;
+        }
+
+        .main-container {
+            width: auto;
+            height: fit-content;
+        }
+
+        .dropdown {
+            position: relative;
+            display: inline-block;
+        }
+
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            background-color: white;
+            box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+            z-index: 1;
+        }
+
+        .dropdown-content a {
+            color: black;
+            padding: 12px 16px;
+            text-decoration: none;
+            display: block;
+        }
+
+        .dropdown-content a:hover {
+            background-color: #f1f1f1;
+        }
+
+        .dropdown:hover .dropdown-content {
+            display: block;
+        }
+
+        .redirect-button {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 1em;
+            border: none;
+            border-radius: 4px;
+            text-decoration: none;
+            text-align: center;
+            display: block;
+            margin: 20px auto;
+            width: fit-content;
+            cursor: pointer;
+            font-size: 1rem;
+        }
+
+        .redirect-button:hover {
+            background-color: var(--hover-color);
+        }
+
+        .view-itinerary-button {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 1em;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 1rem;
+            margin-top: 10px;
+            display: inline-block;
+            width: fit-content;
+        }
+
+        .view-itinerary-button:hover,
+        .view-itinerary-button:focus {
+            background-color: var(--hover-color);
+            outline: 3px solid var(--focus-color);
+        }
+
+        .tooltip {
+            position: relative;
+            display: inline-block;
+            border: 1px dotted black;
+        }
+
+        .tooltip .tooltiptext {
+            visibility: hidden;
+            width: 120px;
+            background-color: var(--text-color);
+            color: #fff;
+            text-align: center;
+            border-radius: 6px;
+            padding: 5px;
+            position: absolute;
+            z-index: 1;
+            bottom: 125%;
+            left: 50%;
+            margin-left: -60px;
+            opacity: 0;
+            transition: opacity var(--animation-duration);
+        }
+
+        .tooltip:hover .tooltiptext {
+            visibility: visible;
+            opacity: 1;
+        }
     </style>
 </head>
 <body>
-    <nav class="navbar">
-        <a href="#" id="home">Home</a> <!-- Use anchor tags for navigation -->
-        <a href="#" id="guides">Guides</a>
-        <input type="text" placeholder="Enter a destination" aria-label="Search for a destination">
-        <button id="login">Log in</button>
-        <button id="signup">Sign Up</button>
-    </nav>
-
-    <main class="main-container" role="main">
-        <h1>Plan a Trip!</h1>
-        <form>
-            <label for="destination">Enter destination</label>
-            <input type="text" id="destination" name="destination" placeholder="Enter destination" required>
-
-            <label for="budget" id="budget-label">Enter Budget</label>
-            <input type="range" id="budget" name="budget" aria-labelledby="budget-label" min="0" max="5000" step="10">
-            
-            <fieldset>
-                <legend>Pick the date</legend>
-                <input type="date" id="trip-date" name="trip-date" required>
-            </fieldset>
-
-            <button type="button" id="invite-friends">Invite Friends</button>
-
-    <div id="privacy-settings" class="privacy-settings" style="display: none;">
-        <fieldset>
-            <legend>Privacy Settings</legend>
-            <label><input type="checkbox" name="privacy" value="friends"> Friends</label>
-            <label><input type="checkbox" name="privacy" value="private"> Private</label>
-            <label><input type="checkbox" name="privacy" value="public"> Public</label>
-            <label><input type="checkbox" name="privacy" value="unlisted"> Unlisted</label>
-        </fieldset>
-    </div>
-
-            <button type="submit" id="start-planning">Start Planning</button>
-        </form>
+    <header>
+        <h1>Welcome and Start Planning!</h1>
+        <nav class="navbar" role="navigation" aria-label="Main Navigation">
+            <a href="Landing Page.html" id="home" aria-label="Home">Home</a>
+            <a href="StudentDiscounts.html" aria-label="Discover Discounts">Discover Discounts</a>
+            <input type="text" placeholder="Search for a destination" aria-label="Search for a destination">
+            <a href="Log in.html" id="login" aria-label="Log in">Log in</a>
+            <a href="Sign Up.html" id="signup" aria-label="Sign Up">Sign Up</a>
+        </nav>
+    </header>
+    <main role="main">
+        <div class="container" role="region" aria-labelledby="main-heading">
+            <h1 id="main-heading">Plan Your Travels!</h1>
+            <div id="userTrips">
+                <h2>Your Trips</h2>
+                <div id="tripsList"></div>
+                <button class="redirect-button" onclick="window.location.href='Planning.html'">Plan a New Trip</button>
+            </div>
+        </div>
     </main>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const userEmail = localStorage.getItem('userEmail');
+            const userId = localStorage.getItem('userId');
 
+            if (userEmail) {
+                const loginElement = document.getElementById('login');
+                loginElement.innerText = userEmail;
+                loginElement.href = "#";
+                loginElement.classList.add('dropdown');
+                const dropdownContent = document.createElement('div');
+                dropdownContent.classList.add('dropdown-content');
+                const logoutLink = document.createElement('a');
+                logoutLink.innerText = 'Log Out';
+                logoutLink.href = "#";
+                logoutLink.onclick = function () {
+                    localStorage.removeItem('userEmail');
+                    localStorage.removeItem('userId');
+                    window.location.assign("Log in.html");
+                };
+                const landingPageLink = document.createElement('a');
+                landingPageLink.innerText = 'Landing Page';
+                landingPageLink.href = "Landing Page.html";
+                dropdownContent.appendChild(landingPageLink);
+                dropdownContent.appendChild(logoutLink);
+                loginElement.appendChild(dropdownContent);
+                document.getElementById('signup').style.display = 'none';
+
+                if (!userId) {
+                    fetch(`http://localhost:8080/users/email/${encodeURIComponent(userEmail)}`)
+                        .then(response => {
+                            if (!response.ok) {
+                                throw new Error('Network response was not ok');
+                            }
+                            return response.json();
+                        })
+                        .then(data => {
+                            if (data.success) {
+                                localStorage.setItem('userId', data.user.id);
+                                fetchItineraries(data.user.id);
+                            } else {
+                                console.error('Failed to retrieve user ID');
+                            }
+                        })
+                        .catch(err => {
+                            console.error('Fetch error:', err);
+                            if (err instanceof SyntaxError) {
+                                console.error('Response is not valid JSON');
+                            }
+                        });
+                } else {
+                    fetchItineraries(userId);
+                }
+            }
+
+            function fetchItineraries(userId) {
+                fetch(`http://localhost:8080/content/itineraries/${userId}`)
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error('Network response was not ok');
+                        }
+                        return response.json();
+                    })
+                    .then(data => {
+                        if (data.success) {
+                            const trips = data.itineraries;
+                            const tripsList = document.getElementById('tripsList');
+                            trips.forEach(trip => {
+                                const tripItem = document.createElement('div');
+                                tripItem.innerHTML = `
+                                    <p>Destination: ${trip.destination}, From: ${trip.start_date}, To: ${trip.end_date}</p>
+                                    <button class="view-itinerary-button" data-itinerary-id="${trip.id}">View Itinerary</button>
+                                `;
+                                tripsList.appendChild(tripItem);
+                            });
+
+                            document.querySelectorAll('.view-itinerary-button').forEach(button => {
+                                button.addEventListener('click', function () {
+                                    const itineraryId = this.getAttribute('data-itinerary-id');
+                                    fetchItinerary(itineraryId);
+                                });
+                            });
+                        }
+                    })
+                    .catch(err => console.log('Fetch error:', err));
+            }
+
+            function fetchItinerary(itineraryId) {
+                fetch(`http://localhost:8080/content/itinerary/${itineraryId}`)
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error('Network response was not ok');
+                        }
+                        return response.json();
+                    })
+                    .then(data => {
+                        if (data.success) {
+                            const itinerary = data.itinerary;
+                            alert(`Itinerary Details:\n\nDestination: ${itinerary.destination}\nFrom: ${itinerary.start_date}\nTo: ${itinerary.end_date}\nDetails: ${JSON.stringify(itinerary.itinerary_details)}`);
+                        }
+                    })
+                    .catch(err => console.log('Fetch error:', err));
+            }
+        });
+    </script>
 </body>
 </html>

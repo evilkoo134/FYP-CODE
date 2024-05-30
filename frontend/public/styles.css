@@ -4,7 +4,7 @@
   --background-light: #f2f2f2;
   --border-color-light: #ccc;
   --text-color: #333;
-  --error-color: #ff0000; /* For error messages */
+  --error-color: #ff0000; 
 }
 
 html {
@@ -55,7 +55,7 @@ button {
 
 button:hover, button:focus {
   background-color: var(--hover-color);
-  outline: none; /* remove default focus outline */
+  outline: none; 
 }
 
 :focus {
@@ -71,7 +71,6 @@ button:hover, button:focus {
 
 /* 
 /* MAIN PAGE CSS */
-/* General styles, similar to what was provided earlier */
 body, input, button {
   font-family: Arial, sans-serif;
   box-sizing: border-box;
@@ -123,9 +122,9 @@ body, input, button {
   border-radius: 4px;
 }
 
-/* sidebar */
+
 html {
-  scroll-behavior: smooth; /* Enables smooth scrolling */
+  scroll-behavior: smooth;
 }
 
 .navbar, .sidebar, .content, .map-section {
@@ -135,7 +134,7 @@ html {
 .sidebar a {
   display: block;
   margin-bottom: 20px;
-  color: #007bff; /* Blue link color */
+  color: #007bff;
   text-decoration: none;
 }
 
@@ -148,28 +147,28 @@ html {
   margin-bottom: 10
 }
 
-/* Main Content Section Styling */
+
 .content {
-  width: 50%; /* or your specified width */
+  width: 50%; 
   padding: 10px;
-  height: 1200px; /* Example fixed height */
-  overflow-y: auto; /* Enables vertical scrolling */
-  border-right: 1px solid #ccc; /* Visual consistency */
+  height: 1200px; 
+  overflow-y: auto;
+  border-right: 1px solid #ccc; 
 }
 
-/* Scrollbar Styling for Webkit Browsers */
+
 .content::-webkit-scrollbar {
-  width: 8px; /* Scrollbar width */
+  width: 8px; 
 }
 
 .content::-webkit-scrollbar-track {
-  background: #f1f1f1; /* Track color */
+  background: #f1f1f1; 
 }
 
 .content::-webkit-scrollbar-thumb {
-  background: #888; /* Thumb color */
+  background: #888; 
 }
 
 .content::-webkit-scrollbar-thumb:hover {
-  background: #555; /* Thumb hover color */
+  background: #555; 
 }

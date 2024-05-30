@@ -1,65 +1,196 @@
 <!DOCTYPE html>
-<html>
-
+<html lang="en">
 <head>
-  <title>Sign In</title>
+  <meta charset="UTF-8">
+  <title>Log In</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="../css/signin.css">
-  <script src="script.js"></script>
+  <link rel="stylesheet" href="styles.css">
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <style>
+    :root {
+      --primary-color: #007bff;
+      --hover-color: #0056b3;
+      --background-light: #f4f4f4;
+      --border-color-light: #ccc;
+      --text-color: #333;
+      --error-color: #ff0000;
+      --focus-color: #ffbf47;
+      --animation-duration: 0.3s;
+    }
+
+    body {
+      font-family: Arial, sans-serif;
+      background-color: var(--background-light);
+      margin: 0;
+      padding: 0;
+    }
+
+    .container {
+      max-width: 400px;
+      margin: 50px auto;
+      padding: 20px;
+      background-color: white;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      transition: box-shadow var(--animation-duration);
+    }
+
+    .container:hover {
+      box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+    }
+
+    h1 {
+      text-align: center;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 8px;
+    }
+
+    input[type="text"],
+    input[type="password"] {
+      width: 100%;
+      padding: 10px;
+      margin: 10px 0 20px 0;
+      border: 1px solid var(--border-color-light);
+      box-sizing: border-box;
+      transition: border-color var(--animation-duration);
+    }
+
+    input[type="text"]:focus,
+    input[type="password"]:focus {
+      border-color: var(--focus-color);
+      outline: none;
+    }
+
+    button {
+      background-color: var(--primary-color);
+      color: white;
+      padding: 14px 20px;
+      margin: 8px 0;
+      border: none;
+      cursor: pointer;
+      width: 100%;
+      transition: background-color var(--animation-duration);
+    }
+
+    button:hover,
+    button:focus {
+      background-color: var(--hover-color);
+      outline: none;
+    }
+
+    .signin {
+      text-align: center;
+    }
+
+    .signin a {
+      color: var(--primary-color);
+    }
+
+    .feedback {
+      display: none;
+      margin-top: 10px;
+      color: var(--error-color);
+    }
+
+    .tooltip {
+      position: relative;
+      display: inline-block;
+      border: 1px dotted black;
+    }
+
+    .tooltip .tooltiptext {
+      visibility: hidden;
+      width: 120px;
+      background-color: var(--text-color);
+      color: #fff;
+      text-align: center;
+      border-radius: 6px;
+      padding: 5px;
+      position: absolute;
+      z-index: 1;
+      bottom: 125%;
+      left: 50%;
+      margin-left: -60px;
+      opacity: 0;
+      transition: opacity var(--animation-duration);
+    }
+
+    .tooltip:hover .tooltiptext {
+      visibility: visible;
+      opacity: 1;
+    }
+  </style>
 </head>
 
 <body>
+  <main>
+    <div class="container">
+      <h1>Log In</h1>
+      <form id="loginForm">
+        <label for="email"><b>Email <span class="tooltip">?
+          <span class="tooltiptext">Enter your email address</span>
+        </span></b></label>
+        <input type="text" placeholder="Enter Email" name="email" id="email" aria-label="Email" required>
+
+        <label for="pwd"><b>Password <span class="tooltip">?
+          <span class="tooltiptext">Enter your password</span>
+        </span></b></label>
+        <input type="password" placeholder="Enter Password" name="psw" id="pwd" aria-label="Password" required>
+
+        <div class="show-password">
+          <input type="checkbox" id="showPwd" aria-label="Show Password"> Show Password
+        </div>
+
+        <button type="submit" class="registerbtn" id="Login">Login</button>
+        <div class="feedback" id="feedback">The email or password entered is incorrect</div>
+      </form>
+      <div class="signin">
+        <p>Don't have an account? <a href="./Sign Up.html">Sign up</a>.</p>
+      </div>
+    </div>
+  </main>
 
   <script>
     $(document).ready(function () {
-      $("#Login").click(function () {
+      $("#showPwd").click(function () {
+        var pwdField = $("#pwd");
+        if (pwdField.attr("type") === "password") {
+          pwdField.attr("type", "text");
+        } else {
+          pwdField.attr("type", "password");
+        }
+      });
+
+      $("#Login").click(function (event) {
+        event.preventDefault();
         var email = $("#email").val();
         var password = $("#pwd").val();
-        var data = `{"email":"${email}","password":"${password}"}`;
+
+        var data = JSON.stringify({ email: email, password: password });
 
         $.ajax({
-          url: 'http://localhost:8080/user/login',
+          url: 'http://localhost:8080/users/login',
           type: 'POST',
           data: data,
           contentType: "application/json",
           dataType: "json",
           success: function (data, textStatus, xhr) {
-            var token = data.token;
-            var userData = data.UserData;
-            localStorage.setItem("token", token);
-            localStorage.setItem("userInfo", userData);
-            window.location.assign("http://localhost:3000/Landing Page.html");
+            if (data.success) {
+              localStorage.setItem('userEmail', email);
+              window.location.assign("Landing Page.html"); // Redirect to the home page or dashboard
+            } else {
+              $("#feedback").text(data.message).show();
+            }
           },
           error: function (xhr, textStatus, err) {
-            window.alert('The email or password entered is incorrect');
+            console.log(err);
+            window.alert("The email or password entered is incorrect");
           }
-
         });
-        return false;
       });
-    })
+    });
   </script>
-
-  <form action="#/">
-    <div class="container">
-      <h1>Log In</h1>
-      <hr>
-
-      <label for="email"><b>Email</b></label>
-      <input type="text" placeholder="Enter Email" name="email" id="email" required>
-
-      <label for="psw"><b>Password</b></label>
-      <input type="password" placeholder="Enter Password" name="psw" id="pwd" required>
-
-      <hr>
-
-      <button type="submit" class="registerbtn" id="Login"></a>Login</button>
-    </div>
-
-    <div class="signin">
-      <p>Dont have an account? <a href="./signup.html">Sign up</a>.</p>
-    </div>
-  </form>
 </body>
-
 </html>
