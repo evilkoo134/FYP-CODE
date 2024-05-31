@@ -6,96 +6,124 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
   <style>
-    :root {
-      --primary-color: #007bff;
-      --hover-color: #0056b3;
-      --background-light: #f4f4f4;
-      --border-color-light: #ccc;
-      --text-color: #333;
-      --error-color: #ff0000;
-      --focus-color: #ffbf47;
-    }
+      :root {
+        --primary-color: #007bff;
+        --hover-color: #0056b3;
+        --background-light: #f4f4f4;
+        --border-color-light: #ccc;
+        --text-color: #333;
+        --error-color: #ff0000;
+        --focus-color: #ffbf47;
+      }
 
-    body {
-      font-family: Arial, sans-serif;
-      background-color: var(--background-light);
-      margin: 0;
-      padding: 0;
-    }
+      body {
+        font-family: Arial, sans-serif;
+        background-color: var(--background-light);
+        margin: 0;
+        padding: 0;
+      }
 
-    .container {
-      max-width: 400px;
-      margin: 50px auto;
-      padding: 20px;
-      background-color: white;
-      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    }
+      .container {
+        max-width: 400px;
+        margin: 50px auto;
+        padding: 20px;
+        background-color: white;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      }
 
-    h1 {
-      text-align: center;
-    }
+      h1 {
+        text-align: center;
+      }
 
-    label {
-      display: block;
-      margin-bottom: 8px;
-    }
+      label {
+        display: block;
+        margin-bottom: 8px;
+      }
 
-    input[type="text"],
-    input[type="password"] {
-      width: 100%;
-      padding: 10px;
-      margin: 10px 0 20px 0;
-      border: 1px solid var(--border-color-light);
-      box-sizing: border-box;
-    }
+      input[type="text"],input[type="password"] {
+        width: 100%;
+        padding: 10px;
+        margin: 10px 0 20px 0;
+        border: 1px solid var(--border-color-light);
+        box-sizing: border-box;
+      }
 
-    button {
-      background-color: var(--primary-color);
-      color: white;
-      padding: 14px 20px;
-      margin: 8px 0;
-      border: none;
-      cursor: pointer;
-      width: 100%;
-    }
+      button {
+        background-color: var(--primary-color);
+        color: white;
+        padding: 14px 20px;
+        margin: 8px 0;
+        border: none;
+        cursor: pointer;
+        width: 100%;
+      }
 
-    button:hover,
-    button:focus {
-      background-color: var(--hover-color);
-      outline: none;
-    }
+      button:hover,button:focus {
+        background-color: var(--hover-color);
+        outline: none;
+      }
 
-    .signin {
-      text-align: center;
-    }
+      .signin {
+        text-align: center;
+      }
 
-    .signin a {
-      color: var(--primary-color);
-    }
+      .signin a {
+        color: var(--primary-color);
+      }
 
-    .feedback {
-      display: none;
-      margin-top: 10px;
-      color: var(--error-color);
-    }
+      .feedback {
+        display: none;
+        margin-top: 10px;
+        color: var(--error-color);
+      }
 
-    .success {
-      color: green;
-    }
-  </style>
+      .success {
+        color: green;
+      }
+
+      .tooltip {
+        position: relative;
+        display: inline-block;
+        border: 1px dotted black;
+      }
+
+      .tooltip .tooltiptext {
+        visibility: hidden;
+        width: 120px;
+        background-color: var(--text-color);
+        color: #fff;
+        text-align: center;
+        border-radius: 6px;
+        padding: 5px;
+        position: absolute;
+        z-index: 1;
+        bottom: 125%;
+        left: 50%;
+        margin-left: -60px;
+        opacity: 0;
+        transition: opacity var(--animation-duration);
+      }
+
+      .tooltip:hover .tooltiptext {
+        visibility: visible;
+        opacity: 1;
+      }
+    </style>
 </head>
 
 <body>
   <div class="container">
     <h1>Sign Up</h1>
     <form id="signUpForm">
-      <label for="email"><b>Email</b></label>
+      <label for="email"><b>Email <span class="tooltip">?
+        <span class="tooltiptext">Enter your email address</span>
+      </span></b></label>
       <input type="text" placeholder="Enter Email" name="email" id="email" aria-label="Email" required>
-      <p id="output" class="feedback"></p>
 
-      <label for="pwd"><b>Password</b></label>
-      <input type="password" placeholder="Enter Password" name="pwd" id="pwd" aria-label="Password" required>
-      <p id="pwd_output" class="feedback"></p>
+      <label for="pwd"><b>Password <span class="tooltip">?
+        <span class="tooltiptext">Enter your password</span>
+      </span></b></label>
+      <input type="password" placeholder="Enter Password" name="psw" id="pwd" aria-label="Password" required>
 
       <div class="show-password">
         <input type="checkbox" id="showPwd" aria-label="Show Password"> Show Password

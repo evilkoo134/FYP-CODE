@@ -6,7 +6,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <style>
-        /* Enhancement: Defined CSS variables for consistency */
         :root {
             --primary-color: #007bff;
             --hover-color: #0056b3;
@@ -55,6 +54,7 @@
             text-decoration: none;
             text-align: center;
             transition: background-color var(--animation-duration);
+            white-space: nowrap;
         }
 
         .navbar a:hover, .navbar button:hover, .navbar a:focus, .navbar button:focus {
@@ -73,11 +73,7 @@
             transition: border-color var(--animation-duration);
         }
 
-        input[type="text"]:focus,
-        input[type="date"]:focus,
-        button:focus,
-        select:focus,
-        textarea:focus {
+        input[type="text"]:focus,input[type="date"]:focus,button:focus,select:focus,textarea:focus {
             border-color: var(--focus-color);
             outline: none;
         }
@@ -152,18 +148,6 @@
             width: 100%;
         }
 
-        nav {
-            background-color: var(--primary-color);
-            padding: 10px;
-            text-align: center;
-        }
-
-        nav a {
-            color: white;
-            text-decoration: none;
-            margin: 0 30px;
-        }
-
         h1 {
             text-align: center;
         }
@@ -231,10 +215,10 @@
             margin-top: 10px;
             display: inline-block;
             width: fit-content;
+            margin: 0 auto;
         }
 
-        .view-itinerary-button:hover,
-        .view-itinerary-button:focus {
+        .view-itinerary-button:hover,.view-itinerary-button:focus {
             background-color: var(--hover-color);
             outline: 3px solid var(--focus-color);
         }
@@ -242,7 +226,7 @@
         .tooltip {
             position: relative;
             display: inline-block;
-            border: 1px dotted black;
+            border-bottom: 1px dotted black;
         }
 
         .tooltip .tooltiptext {
@@ -266,6 +250,33 @@
             visibility: visible;
             opacity: 1;
         }
+
+        .section-container {
+            padding: 20px;
+            background-color: white;
+            border-radius: 8px;
+            margin: 20px 0;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .section-container h2 {
+            text-align: center;
+        }
+
+        .section-container a {
+            display: block;
+            margin: 10px 0;
+            color: var(--primary-color);
+            text-align: center;
+            text-decoration: none;
+            font-weight: bold;
+            transition: color var(--animation-duration);
+        }
+
+        .section-container a:hover,.section-container a:focus {
+            color: var(--hover-color);
+            outline: none;
+        }
     </style>
 </head>
 <body>
@@ -274,7 +285,14 @@
         <nav class="navbar" role="navigation" aria-label="Main Navigation">
             <a href="Landing Page.html" id="home" aria-label="Home">Home</a>
             <a href="StudentDiscounts.html" aria-label="Discover Discounts">Discover Discounts</a>
-            <input type="text" placeholder="Search for a destination" aria-label="Search for a destination">
+            <select id="destinationSelect" aria-label="Select a destination">
+                <option value="" disabled selected>Select a destination</option>
+                <option value="paris">Paris</option>
+                <option value="newyork">New York</option>
+                <option value="tokyo">Tokyo</option>
+                <option value="sydney">Sydney</option>
+                <option value="london">London</option>
+            </select>
             <a href="Log in.html" id="login" aria-label="Log in">Log in</a>
             <a href="Sign Up.html" id="signup" aria-label="Sign Up">Sign Up</a>
         </nav>
@@ -286,6 +304,16 @@
                 <h2>Your Trips</h2>
                 <div id="tripsList"></div>
                 <button class="redirect-button" onclick="window.location.href='Planning.html'">Plan a New Trip</button>
+            </div>
+            <div class="section-container">
+                <h2>Find Flights</h2>
+                <a href="https://www.skyscanner.com" target="_blank" rel="noopener noreferrer">Search Flights on Skyscanner</a>
+                <a href="https://www.kayak.com/flights" target="_blank" rel="noopener noreferrer">Search Flights on Kayak</a>
+            </div>
+            <div class="section-container">
+                <h2>Find Hotels</h2>
+                <a href="https://www.booking.com" target="_blank" rel="noopener noreferrer">Search Hotels on Booking.com</a>
+                <a href="https://www.airbnb.com" target="_blank" rel="noopener noreferrer">Search Hotels on Airbnb</a>
             </div>
         </div>
     </main>
@@ -310,9 +338,6 @@
                     window.location.assign("Log in.html");
                 };
                 const landingPageLink = document.createElement('a');
-                landingPageLink.innerText = 'Landing Page';
-                landingPageLink.href = "Landing Page.html";
-                dropdownContent.appendChild(landingPageLink);
                 dropdownContent.appendChild(logoutLink);
                 loginElement.appendChild(dropdownContent);
                 document.getElementById('signup').style.display = 'none';
@@ -360,7 +385,7 @@
                                 const tripItem = document.createElement('div');
                                 tripItem.innerHTML = `
                                     <p>Destination: ${trip.destination}, From: ${trip.start_date}, To: ${trip.end_date}</p>
-                                    <button class="view-itinerary-button" data-itinerary-id="${trip.id}">View Itinerary</button>
+                                    <button class="view-itinerary-button" data-itinerary-id="${trip.id}">View or Edit Itinerary</button>
                                 `;
                                 tripsList.appendChild(tripItem);
                             });
@@ -368,30 +393,17 @@
                             document.querySelectorAll('.view-itinerary-button').forEach(button => {
                                 button.addEventListener('click', function () {
                                     const itineraryId = this.getAttribute('data-itinerary-id');
-                                    fetchItinerary(itineraryId);
+                                    window.location.href = `Itinerary.html?itineraryId=${itineraryId}`;
                                 });
                             });
                         }
                     })
                     .catch(err => console.log('Fetch error:', err));
             }
-
-            function fetchItinerary(itineraryId) {
-                fetch(`http://localhost:8080/content/itinerary/${itineraryId}`)
-                    .then(response => {
-                        if (!response.ok) {
-                            throw new Error('Network response was not ok');
-                        }
-                        return response.json();
-                    })
-                    .then(data => {
-                        if (data.success) {
-                            const itinerary = data.itinerary;
-                            alert(`Itinerary Details:\n\nDestination: ${itinerary.destination}\nFrom: ${itinerary.start_date}\nTo: ${itinerary.end_date}\nDetails: ${JSON.stringify(itinerary.itinerary_details)}`);
-                        }
-                    })
-                    .catch(err => console.log('Fetch error:', err));
-            }
+            document.getElementById('destinationSelect').addEventListener('change', function () {
+                const selectedDestination = this.value;
+                window.location.href = `Guides.html?destination=${selectedDestination}`;
+            });
         });
     </script>
 </body>

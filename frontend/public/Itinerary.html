@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Itinerary</title>
     <style>
-        /* Enhancement: Defined CSS variables for consistency */
         :root {
             --primary-color: #007bff;
             --hover-color: #0056b3;
@@ -71,13 +70,7 @@
             transition: border-color var(--animation-duration);
         }
 
-        input[type="text"]:focus,
-        input[type="date"]:focus,
-        button:focus,
-        select:focus,
-        textarea:focus,
-        input[type="number"]:focus,
-        input[type="file"]:focus {
+        input[type="text"]:focus,input[type="date"]:focus,button:focus,select:focus,textarea:focus,input[type="number"]:focus,input[type="file"]:focus {
             border-color: var(--focus-color);
             outline: none;
         }
@@ -123,7 +116,7 @@
         }
 
         .sidebar a:hover, .sidebar a:focus {
-            background-color: var(--hover-color);
+            background-color: var (--hover-color);
             color: white;
             outline: none;
         }
@@ -173,7 +166,7 @@
         }
 
         .dropdown-content a {
-            color: black;
+            color: white;
             padding: 12px 16px;
             text-decoration: none;
             display: block;
@@ -193,10 +186,11 @@
             left: 50%;
             top: 50%;
             transform: translate(-50%, -50%);
-            background-color: white;
+            background-color: black;
             border: 1px solid var(--border-color-light);
             border-radius: 4px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            color: white;
             padding: 20px;
             z-index: 1000;
             text-align: center;
@@ -209,7 +203,7 @@
         .tooltip {
             position: relative;
             display: inline-block;
-            border: 1px dotted black;
+            border-bottom: 1px dotted black;
         }
 
         .tooltip .tooltiptext {
@@ -224,7 +218,7 @@
             z-index: 1;
             bottom: 125%;
             left: 50%;
-            margin-left: auto;
+            margin-left: -60px;
             opacity: 0;
             transition: opacity var(--animation-duration);
         }
@@ -233,14 +227,37 @@
             visibility: visible;
             opacity: 1;
         }
+
+        @media screen and (min-width: 768px) {
+            .navbar input {
+                flex: 1;
+            }
+
+            .navbar a, .navbar button {
+                flex: 0 0 auto;
+            }
+        }
+
+        h1 {
+            text-align: center;
+        }
+
     </style>
 </head>
 <body>
     <header>
+        <h1>Start Planning!</h1>
         <nav class="navbar">
             <a href="Landing Page.html" id="home">Home</a>
             <a href="StudentDiscounts.html">Discover Discounts</a>
-            <input type="text" placeholder="Search for a destination" aria-label="Search for a destination">
+            <select id="destinationSelect" aria-label="Select a destination">
+                <option value="" disabled selected>Select a destination</option>
+                <option value="paris">Paris</option>
+                <option value="newyork">New York</option>
+                <option value="tokyo">Tokyo</option>
+                <option value="sydney">Sydney</option>
+                <option value="london">London</option>
+            </select>            
             <a href="Log in.html" id="login">Log in</a>
             <a href="Sign Up.html" id="signup">Sign Up</a>
         </nav>
@@ -262,7 +279,7 @@
             <div class="budget-section">
                 <h2>Budget</h2>
                 <div class="expense">
-                    <label for="total-budget">Total Budget: $ <span class="tooltip">?
+                    <label for="total-budget">Total Budget: £ <span class="tooltip">?
                         <span class="tooltiptext">Enter your total trip budget</span>
                     </span></label>
                     <input type="number" id="total-budget" name="total-budget" min="0" step="10">
@@ -307,82 +324,163 @@
                     window.location.assign("Log in.html");
                 };
                 const landingPageLink = document.createElement('a');
-                landingPageLink.innerText = 'Landing Page';
-                landingPageLink.href = "Landing Page.html";
-                dropdownContent.appendChild(landingPageLink);
                 dropdownContent.appendChild(logoutLink);
                 loginElement.appendChild(dropdownContent);
                 document.getElementById('signup').style.display = 'none';
             }
 
             const urlParams = new URLSearchParams(window.location.search);
-            const destination = urlParams.get('destination');
-            const startDate = new Date(urlParams.get('startDate'));
-            const endDate = new Date(urlParams.get('endDate'));
-            const invitees = urlParams.get('invitees');
+            const itineraryId = urlParams.get('itineraryId');
+            let destination = urlParams.get('destination');
+            let startDate = urlParams.get('startDate');
+            let endDate = urlParams.get('endDate');
+            let invitees = urlParams.get('invitees');
 
-            document.getElementById('tripTitle').innerText = `Plan a Trip to ${destination}`;
-            document.getElementById('tripDates').innerText = `From ${startDate.toDateString()} to ${endDate.toDateString()}`;
+            if (itineraryId) {
+                fetch(`http://localhost:8080/content/itinerary/${itineraryId}`)
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error('Network response was not ok');
+                        }
+                        return response.json();
+                    })
+                    .then(data => {
+                        if (data.success) {
+                            const itinerary = data.itinerary;
+                            destination = itinerary.destination;
+                            startDate = new Date(itinerary.start_date);
+                            endDate = new Date(itinerary.end_date);
+                            invitees = itinerary.invitees;
 
-            const mapFrame = document.getElementById('mapFrame');
-            mapFrame.src = `https://www.google.com/maps/embed/v1/place?key=AIzaSyD6BlM_-qNR_MEHAfjQMy7VuXEAjEOyLF4&q=${encodeURIComponent(destination)}`;
+                            document.getElementById('tripTitle').innerText = `Plan a Trip to ${destination}`;
+                            document.getElementById('tripDates').innerText = `From ${startDate.toDateString()} to ${endDate.toDateString()}`;
 
-            const sidebar = document.getElementById('sidebar');
-            const itinerary = document.getElementById('itinerary');
-            const dailyExpenses = document.getElementById('daily-expenses');
+                            const mapFrame = document.getElementById('mapFrame');
+                            mapFrame.src = `https://www.google.com/maps/embed/v1/place?key=AIzaSyD6BlM_-qNR_MEHAfjQMy7VuXEAjEOyLF4&q=${encodeURIComponent(destination)}`;
 
-            const getDaysArray = (start, end) => {
-                for (var arr = [], dt = new Date(start); dt <= end; dt.setDate(dt.getDate() + 1)) {
-                    arr.push(new Date(dt));
+                            const sidebar = document.getElementById('sidebar');
+                            const itineraryElement = document.getElementById('itinerary');
+                            const dailyExpenses = document.getElementById('daily-expenses');
+
+                            const daysArray = itinerary.itinerary_details;
+                            daysArray.forEach((day, index) => {
+                                const dayId = `day${index + 1}`;
+                                const dayLink = document.createElement('a');
+                                dayLink.href = `#${dayId}`;
+                                dayLink.innerText = day.day;
+                                sidebar.appendChild(dayLink);
+
+                                const daySection = document.createElement('div');
+                                daySection.id = dayId;
+                                daySection.className = 'itinerary-detail';
+
+                                const dayTitle = document.createElement('h3');
+                                dayTitle.innerText = day.day;
+                                daySection.appendChild(dayTitle);
+
+                                const activityInput = document.createElement('textarea');
+                                activityInput.placeholder = 'Enter activities for this day...';
+                                activityInput.value = day.activities;
+                                activityInput.addEventListener('input', autoExpand);
+                                daySection.appendChild(activityInput);
+
+                                const budgetInput = document.createElement('input');
+                                budgetInput.type = 'number';
+                                budgetInput.placeholder = 'Enter budget for this day...';
+                                budgetInput.min = '0';
+                                budgetInput.step = '10';
+                                budgetInput.value = day.budget;
+                                daySection.appendChild(budgetInput);
+
+                                itineraryElement.appendChild(daySection);
+
+                                const expenseDiv = document.createElement('div');
+                                expenseDiv.className = 'expense';
+                                const expenseLabel = document.createElement('label');
+                                expenseLabel.innerText = `Day ${index + 1} Expense: £`;
+                                const expenseInput = document.createElement('input');
+                                expenseInput.type = 'number';
+                                expenseInput.min = '0';
+                                expenseInput.step = '10';
+                                expenseInput.value = day.budget;
+                                expenseDiv.appendChild(expenseLabel);
+                                expenseDiv.appendChild(expenseInput);
+                                dailyExpenses.appendChild(expenseDiv);
+                            });
+                        }
+                    })
+                    .catch(err => {
+                        console.error('Fetch error:', err);
+                        if (err instanceof SyntaxError) {
+                            console.error('Response is not valid JSON');
+                        }
+                    });
+            } else if (destination && startDate && endDate) {
+                const tripTitle = `Plan a Trip to ${destination}`;
+                document.getElementById('tripTitle').innerText = tripTitle;
+                document.getElementById('tripDates').innerText = `From ${new Date(startDate).toDateString()} to ${new Date(endDate).toDateString()}`;
+                document.getElementById('tripInvitees').innerText = `Invitees: ${invitees ? invitees : 'None'}`;
+
+                const mapFrame = document.getElementById('mapFrame');
+                mapFrame.src = `https://www.google.com/maps/embed/v1/place?key=AIzaSyD6BlM_-qNR_MEHAfjQMy7VuXEAjEOyLF4&q=${encodeURIComponent(destination)}`;
+
+                // Add empty itinerary details for each day between start and end date
+                const itineraryElement = document.getElementById('itinerary');
+                const sidebar = document.getElementById('sidebar');
+                const dailyExpenses = document.getElementById('daily-expenses');
+
+                const start = new Date(startDate);
+                const end = new Date(endDate);
+                const days = Math.round((end - start) / (1000 * 60 * 60 * 24));
+
+                for (let i = 0; i <= days; i++) {
+                    const currentDate = new Date(start);
+                    currentDate.setDate(start.getDate() + i);
+
+                    const dayId = `day${i + 1}`;
+                    const dayLink = document.createElement('a');
+                    dayLink.href = `#${dayId}`;
+                    dayLink.innerText = currentDate.toDateString();
+                    sidebar.appendChild(dayLink);
+
+                    const daySection = document.createElement('div');
+                    daySection.id = dayId;
+                    daySection.className = 'itinerary-detail';
+
+                    const dayTitle = document.createElement('h3');
+                    dayTitle.innerText = currentDate.toDateString();
+                    daySection.appendChild(dayTitle);
+
+                    const activityInput = document.createElement('textarea');
+                    activityInput.placeholder = 'Enter activities for this day...';
+                    activityInput.addEventListener('input', autoExpand);
+                    daySection.appendChild(activityInput);
+
+                    const budgetInput = document.createElement('input');
+                    budgetInput.type = 'number';
+                    budgetInput.placeholder = 'Enter budget for this day...';
+                    budgetInput.min = '0';
+                    budgetInput.step = '10';
+                    daySection.appendChild(budgetInput);
+
+                    itineraryElement.appendChild(daySection);
+
+                    const expenseDiv = document.createElement('div');
+                    expenseDiv.className = 'expense';
+                    const expenseLabel = document.createElement('label');
+                    expenseLabel.innerText = `Day ${i + 1} Expense: £`;
+                    const expenseInput = document.createElement('input');
+                    expenseInput.type = 'number';
+                    expenseInput.min = '0';
+                    expenseInput.step = '10';
+                    expenseDiv.appendChild(expenseLabel);
+                    expenseDiv.appendChild(expenseInput);
+                    dailyExpenses.appendChild(expenseDiv);
                 }
-                return arr;
-            };
-
-            const daysArray = getDaysArray(startDate, endDate);
-            daysArray.forEach((day, index) => {
-                const dayId = `day${index + 1}`;
-                const dayLink = document.createElement('a');
-                dayLink.href = `#${dayId}`;
-                dayLink.innerText = `${day.toDateString()}`;
-                sidebar.appendChild(dayLink);
-
-                const daySection = document.createElement('div');
-                daySection.id = dayId;
-                daySection.className = 'itinerary-detail';
-
-                const dayTitle = document.createElement('h3');
-                dayTitle.innerText = `Day ${index + 1} - ${day.toDateString()}`;
-                daySection.appendChild(dayTitle);
-
-                const activityInput = document.createElement('textarea');
-                activityInput.placeholder = 'Enter activities for this day...';
-                activityInput.addEventListener('input', autoExpand);
-                daySection.appendChild(activityInput);
-
-                const budgetInput = document.createElement('input');
-                budgetInput.type = 'number';
-                budgetInput.placeholder = 'Enter budget for this day...';
-                budgetInput.min = '0';
-                budgetInput.step = '10';
-                daySection.appendChild(budgetInput);
-
-                itinerary.appendChild(daySection);
-
-                const expenseDiv = document.createElement('div');
-                expenseDiv.className = 'expense';
-                const expenseLabel = document.createElement('label');
-                expenseLabel.innerText = `Day ${index + 1} Expense: $`;
-                const expenseInput = document.createElement('input');
-                expenseInput.type = 'number';
-                expenseInput.min = '0';
-                expenseInput.step = '10';
-                expenseDiv.appendChild(expenseLabel);
-                expenseDiv.appendChild(expenseInput);
-                dailyExpenses.appendChild(expenseDiv);
-            });
+            }
 
             document.getElementById('save-itinerary').addEventListener('click', function () {
-                const itineraryDetails = Array.from(itinerary.getElementsByClassName('itinerary-detail')).map(daySection => {
+                const itineraryDetails = Array.from(document.getElementsByClassName('itinerary-detail')).map(daySection => {
                     return {
                         day: daySection.querySelector('h3').innerText,
                         activities: daySection.querySelector('textarea').value,
@@ -390,18 +488,23 @@
                     };
                 });
 
-                fetch('http://localhost:8080/content/itineraries', {
-                    method: 'POST',
+                const payload = {
+                    user_email: userEmail,
+                    destination,
+                    start_date: startDate,
+                    end_date: endDate,
+                    itinerary_details: JSON.stringify(itineraryDetails)
+                };
+
+                const method = itineraryId ? 'PUT' : 'POST';
+                const url = itineraryId ? `http://localhost:8080/content/itineraries/${itineraryId}` : 'http://localhost:8080/content/itineraries';
+
+                fetch(url, {
+                    method: method,
                     headers: {
                         'Content-Type': 'application/json'
                     },
-                    body: JSON.stringify({
-                        user_email: userEmail,
-                        destination,
-                        start_date: startDate.toISOString(),
-                        end_date: endDate.toISOString(),
-                        itinerary_details: JSON.stringify(itineraryDetails)
-                    })
+                    body: JSON.stringify(payload)
                 })
                 .then(response => {
                     if (!response.ok) {
@@ -431,6 +534,11 @@
                 element.style.height = 'auto';
                 element.style.height = element.scrollHeight + 'px';
             }
+
+            document.getElementById('destinationSelect').addEventListener('change', function () {
+                const selectedDestination = this.value;
+                window.location.href = `Guides.html?destination=${selectedDestination}`;
+            });
         });
     </script>
 </body>

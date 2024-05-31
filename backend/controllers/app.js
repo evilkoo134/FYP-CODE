@@ -120,6 +120,37 @@ app.post('/content/itineraries', function(req, res) {
     });
 });
 
+// Update itinerary
+app.put('/content/itineraries/:itinerary_id', function(req, res) {
+    const { user_email, destination, start_date, end_date, itinerary_details } = req.body;
+    const itinerary_id = parseInt(req.params.itinerary_id, 10); // Ensure itinerary_id is an integer
+
+    if (isNaN(itinerary_id)) {
+        return res.status(400).json({ success: false, message: 'Invalid itinerary ID' });
+    }
+
+    user.getUserByEmail(user_email, function(err, userResult) {
+        if (err || !userResult) {
+            console.error('Failed to retrieve user:', err);
+            return res.status(400).json({ success: false, message: 'Invalid user' });
+        }
+
+        const user_id = userResult.id;
+
+        itinerary.updateItinerary(itinerary_id, user_id, destination, start_date, end_date, itinerary_details, function(err, result) {
+            if (err) {
+                console.error('Failed to update itinerary:', err);
+                return res.status(500).json({ success: false, message: 'Internal Server Error' });
+            }
+            if (result) {
+                res.status(200).json({ success: true, message: 'Itinerary updated successfully' });
+            } else {
+                res.status(404).json({ success: false, message: 'Itinerary not found' });
+            }
+        });
+    });
+});
+
 // Get itineraries for a user
 app.get('/content/itineraries/:user_id', function(req, res) {
     const user_id = parseInt(req.params.user_id, 10); // Ensure user_id is an integer
