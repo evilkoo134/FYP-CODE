@@ -6,111 +6,110 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
   <style>
-      :root {
-        --primary-color: #007bff;
-        --hover-color: #0056b3;
-        --background-light: #f4f4f4;
-        --border-color-light: #ccc;
-        --text-color: #333;
-        --error-color: #ff0000;
-        --focus-color: #ffbf47;
-      }
+    :root {
+      --primary-color: #0056b3;
+      --hover-color: #000000;
+      --background-light: #f4f4f4;
+      --border-color-light: #ccc;
+      --text-color: #333;
+      --error-color: #ff0000;
+      --focus-color: #ffbf47;
+    }
 
-      body {
-        font-family: Arial, sans-serif;
-        background-color: var(--background-light);
-        margin: 0;
-        padding: 0;
-      }
+    body {
+      font-family: Arial, sans-serif;
+      background-color: var(--background-light);
+      margin: 0;
+      padding: 0;
+    }
 
-      .container {
-        max-width: 400px;
-        margin: 50px auto;
-        padding: 20px;
-        background-color: white;
-        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-      }
+    .container {
+      max-width: 400px;
+      margin: 50px auto;
+      padding: 20px;
+      background-color: white;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
 
-      h1 {
-        text-align: center;
-      }
+    h1 {
+      text-align: center;
+    }
 
-      label {
-        display: block;
-        margin-bottom: 8px;
-      }
+    label {
+      display: block;
+      margin-bottom: 8px;
+    }
 
-      input[type="text"],input[type="password"] {
-        width: 100%;
-        padding: 10px;
-        margin: 10px 0 20px 0;
-        border: 1px solid var(--border-color-light);
-        box-sizing: border-box;
-      }
+    input[type="text"], input[type="password"] {
+      width: 100%;
+      padding: 10px;
+      margin: 10px 0 20px 0;
+      border: 1px solid var(--border-color-light);
+      box-sizing: border-box;
+    }
 
-      button {
-        background-color: var(--primary-color);
-        color: white;
-        padding: 14px 20px;
-        margin: 8px 0;
-        border: none;
-        cursor: pointer;
-        width: 100%;
-      }
+    button {
+      background-color: var(--primary-color);
+      color: white;
+      padding: 14px 20px;
+      margin: 8px 0;
+      border: none;
+      cursor: pointer;
+      width: 100%;
+    }
 
-      button:hover,button:focus {
-        background-color: var(--hover-color);
-        outline: none;
-      }
+    button:hover, button:focus {
+      background-color: var(--hover-color);
+      outline: none;
+    }
 
-      .signin {
-        text-align: center;
-      }
+    .signin {
+      text-align: center;
+    }
 
-      .signin a {
-        color: var(--primary-color);
-      }
+    .signin a {
+      color: var(--primary-color);
+    }
 
-      .feedback {
-        display: none;
-        margin-top: 10px;
-        color: var(--error-color);
-      }
+    .feedback {
+      display: none;
+      margin-top: 10px;
+      color: var(--error-color);
+    }
 
-      .success {
-        color: green;
-      }
+    .success {
+      color: green;
+    }
 
-      .tooltip {
-        position: relative;
-        display: inline-block;
-        border: 1px dotted black;
-      }
+    .tooltip {
+      position: relative;
+      display: inline-block;
+      border: 1px dotted black;
+    }
 
-      .tooltip .tooltiptext {
-        visibility: hidden;
-        width: 120px;
-        background-color: var(--text-color);
-        color: #fff;
-        text-align: center;
-        border-radius: 6px;
-        padding: 5px;
-        position: absolute;
-        z-index: 1;
-        bottom: 125%;
-        left: 50%;
-        margin-left: -60px;
-        opacity: 0;
-        transition: opacity var(--animation-duration);
-      }
+    .tooltip .tooltiptext {
+      visibility: hidden;
+      width: 120px;
+      background-color: var(--text-color);
+      color: #fff;
+      text-align: center;
+      border-radius: 6px;
+      padding: 5px;
+      position: absolute;
+      z-index: 1;
+      bottom: 125%;
+      left: 50%;
+      margin-left: -60px;
+      opacity: 0;
+      transition: opacity var(--animation-duration);
+    }
 
-      .tooltip:hover .tooltiptext {
-        visibility: visible;
-        opacity: 1;
-      }
-    </style>
+    .tooltip:hover .tooltiptext {
+      visibility: visible;
+      opacity: 1;
+    }
+  </style>
 </head>
-
 <body>
   <div class="container">
     <h1>Sign Up</h1>
@@ -119,21 +118,23 @@
         <span class="tooltiptext">Enter your email address</span>
       </span></b></label>
       <input type="text" placeholder="Enter Email" name="email" id="email" aria-label="Email" required>
+      <div id="emailFeedback" class="feedback"></div>
 
       <label for="pwd"><b>Password <span class="tooltip">?
         <span class="tooltiptext">Enter your password</span>
       </span></b></label>
       <input type="password" placeholder="Enter Password" name="psw" id="pwd" aria-label="Password" required>
+      <div id="pwdFeedback" class="feedback"></div>
 
       <div class="show-password">
         <input type="checkbox" id="showPwd" aria-label="Show Password"> Show Password
       </div>
 
       <button type="submit" class="registerbtn" id="Register">Register</button>
-      <p id="success_message" class="feedback success"></p>
+      <div id="output" class="feedback"></div>
     </form>
     <div class="signin">
-      <p>Already have an account? <a href="./Log in.html">Sign in</a>.</p>
+      <p>Already have an account? <a href="./Log in.html">Log in Here</a>.</p>
     </div>
   </div>
   <script>
@@ -154,12 +155,12 @@
         var emailPattern = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/;
 
         if (!emailPattern.test(email)) {
-          $("#output").text("Invalid email address").show();
+          $("#emailFeedback").text("Invalid email address").show();
           return;
         }
 
         if (password.length < 8) {
-          $("#pwd_output").text("Password must be at least 8 characters").show();
+          $("#pwdFeedback").text("Password must be at least 8 characters").show();
           return;
         }
 
@@ -176,12 +177,14 @@
               localStorage.setItem('userEmail', email);
               window.location.assign("Log in.html");
             } else {
-              $("#output").text(data.message).show();
+              $("#emailFeedback").text(data.message.email || "").show();
+              $("#pwdFeedback").text(data.message.password || "").show();
             }
           },
           error: function (xhr, textStatus, err) {
             console.log(err);
-            window.alert("Error occurred during registration.");
+            $("#emailFeedback").text("Error occurred during registration.").show();
+            $("#pwdFeedback").text("Error occurred during registration.").show();
           }
         });
       });

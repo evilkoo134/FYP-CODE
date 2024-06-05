@@ -8,15 +8,14 @@
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
   <style>
       :root {
-        --primary-color: #007bff;
-        --hover-color: #0056b3;
-        --background-light: #f4f4f4;
+        --primary-color: #0056b3;
+        --hover-color: #000000;
+        --background-light: #f2f2f2;
         --border-color-light: #ccc;
         --text-color: #333;
         --error-color: #ff0000;
-        --focus-color: #ffbf47;
         --animation-duration: 0.3s;
-      }
+        }
 
       body {
         font-family: Arial, sans-serif;
@@ -57,7 +56,7 @@
       }
 
       input[type="text"]:focus,input[type="password"]:focus {
-        border-color: var(--focus-color);
+        border-color: var(--hover-color);
         outline: none;
       }
 
@@ -118,6 +117,12 @@
         visibility: visible;
         opacity: 1;
       }
+
+      .feedback {
+        display: none;
+        margin-top: 10px;
+        color: var(--error-color);
+      }
   </style>
 </head>
 
@@ -130,11 +135,13 @@
           <span class="tooltiptext">Enter your email address</span>
         </span></b></label>
         <input type="text" placeholder="Enter Email" name="email" id="email" aria-label="Email" required>
+        <div class="feedback" id="emailFeedback"></div>
 
         <label for="pwd"><b>Password <span class="tooltip">?
           <span class="tooltiptext">Enter your password</span>
         </span></b></label>
         <input type="password" placeholder="Enter Password" name="psw" id="pwd" aria-label="Password" required>
+        <div class="feedback" id="passwordFeedback"></div>
 
         <div class="show-password">
           <input type="checkbox" id="showPwd" aria-label="Show Password"> Show Password
@@ -176,14 +183,24 @@
           success: function (data, textStatus, xhr) {
             if (data.success) {
               localStorage.setItem('userEmail', email);
-              window.location.assign("Landing Page.html"); // Redirect to the home page or dashboard
+              window.location.assign("Landing Page.html"); 
             } else {
               $("#feedback").text(data.message).show();
             }
           },
           error: function (xhr, textStatus, err) {
-            console.log(err);
-            window.alert("The email or password entered is incorrect");
+            $("#emailFeedback").text("");
+            $("#passwordFeedback").text("");
+            if (xhr.responseJSON && xhr.responseJSON.errors) {
+              if (xhr.responseJSON.errors.email) {
+                $("#emailFeedback").text(xhr.responseJSON.errors.email).show();
+              }
+              if (xhr.responseJSON.errors.password) {
+                $("#passwordFeedback").text(xhr.responseJSON.errors.password).show();
+              }
+            } else {
+              $("#feedback").text("The email or password entered is incorrect").show();
+            }
           }
         });
       });
