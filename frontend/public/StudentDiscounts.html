@@ -200,15 +200,14 @@
     </main>
     <script>
         document.getElementById('verify-student-form').addEventListener('submit', function(event) {
-            event.preventDefault();  // Prevent the default form submission
+            event.preventDefault();  
             const emailInput = document.getElementById('student-email');
-            if (emailInput.value.endsWith('@ac.uk')) {
+            if (emailInput.value.endsWith('ac.uk')) {
                 alert('Verification successful. You are eligible for student discounts.');
             } else {
                 alert('Please enter a valid university email address.');
             }
 
-            // Enhancement: Display user email if logged in
             const userEmail = localStorage.getItem('userEmail');
             if (userEmail) {
                 document.getElementById('login').innerText = userEmail;
