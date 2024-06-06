@@ -139,6 +139,33 @@
   </div>
   <script>
     $(document).ready(function () {
+      function validateEmail(email) {
+        var emailPattern = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/;
+        return emailPattern.test(email);
+      }
+
+      function validatePassword(password) {
+        return password.length >= 8;
+      }
+
+      $("#email").on("input", function () {
+        var email = $(this).val();
+        if (validateEmail(email)) {
+          $("#emailFeedback").hide();
+        } else {
+          $("#emailFeedback").text("Invalid email address").show();
+        }
+      });
+
+      $("#pwd").on("input", function () {
+        var password = $(this).val();
+        if (validatePassword(password)) {
+          $("#pwdFeedback").hide();
+        } else {
+          $("#pwdFeedback").text("Password must be at least 8 characters").show();
+        }
+      });
+
       $("#showPwd").click(function () {
         var pwdField = $("#pwd");
         if (pwdField.attr("type") === "password") {
@@ -152,14 +179,13 @@
         event.preventDefault();
         var email = $("#email").val();
         var password = $("#pwd").val();
-        var emailPattern = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/;
 
-        if (!emailPattern.test(email)) {
+        if (!validateEmail(email)) {
           $("#emailFeedback").text("Invalid email address").show();
           return;
         }
 
-        if (password.length < 8) {
+        if (!validatePassword(password)) {
           $("#pwdFeedback").text("Password must be at least 8 characters").show();
           return;
         }
