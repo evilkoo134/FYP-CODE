@@ -290,16 +290,7 @@
             </div>
         </section>
 
-        <aside class="map-section">
-            <iframe
-                id="mapFrame"
-                width="100%"
-                height="450"
-                style="border:0"
-                loading="lazy"
-                allowfullscreen>
-            </iframe>
-        </aside>
+    
     </div>
 
     <div class="popup" id="popup">
@@ -355,8 +346,7 @@
                             document.getElementById('tripTitle').innerText = `Plan a Trip to ${destination}`;
                             document.getElementById('tripDates').innerText = `From ${startDate.toDateString()} to ${endDate.toDateString()}`;
 
-                            const mapFrame = document.getElementById('mapFrame');
-                            mapFrame.src = `https://www.google.com/maps/embed/v1/place?key=AIzaSyD6BlM_-qNR_MEHAfjQMy7VuXEAjEOyLF4&q=${encodeURIComponent(destination)}`;
+                            
 
                             const sidebar = document.getElementById('sidebar');
                             const itineraryElement = document.getElementById('itinerary');
@@ -421,8 +411,7 @@
                 document.getElementById('tripDates').innerText = `From ${new Date(startDate).toDateString()} to ${new Date(endDate).toDateString()}`;
                 document.getElementById('tripInvitees').innerText = `Invitees: ${invitees ? invitees : 'None'}`;
 
-                const mapFrame = document.getElementById('mapFrame');
-                mapFrame.src = `https://www.google.com/maps/embed/v1/place?key=AIzaSyD6BlM_-qNR_MEHAfjQMy7VuXEAjEOyLF4&q=${encodeURIComponent(destination)}`;
+               
 
                 
                 const itineraryElement = document.getElementById('itinerary');
